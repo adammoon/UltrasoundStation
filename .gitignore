@@ -1,0 +1,9 @@
+#忽略的文件列表
+*.exe
+Makefile
+*.pro.user
+*.pro.user.2.1pre1
+*.Debug
+*.Release
+debug\
+release\
