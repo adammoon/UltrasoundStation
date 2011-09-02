@@ -3,7 +3,7 @@
 #include "Headers/LoadReqProcessServer.h"
 
 #include <QPushButton>
-#include <QlineEdit>
+#include <QLineEdit>
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -72,6 +72,17 @@ void QsignInWidget::loadIn(){
     QSignRequest* currentREQ = new QSignRequest(userName,
                                                 userPassWd,
                                                 role);
-    while(currentREQ->ProcessSignReq() != QSignRequest::REQ_ACCEPT);//µÈ´ý
+    while(1){
+        if(currentREQ->ProcessSignReq() == QSignRequest::REQ_ACCEPT)
+        {
+            qDebug("req accept!");
+            break;
+        }
+        if(currentREQ->ProcessSignReq() == QSignRequest::REQ_REJECT){
+            qDebug("req reject!");
+            break;
+        }
+        qDebug("req in queue!");
+    }
     return;
 }

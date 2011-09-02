@@ -1,6 +1,7 @@
 #include "Headers/LoadReqProcessServer.h"
 
 #include <QList>
+#include <QMutex>
 
 //static members
 QLoadReqProcServer* QLoadReqProcServer::serverInstance = 0;
@@ -8,6 +9,7 @@ QList<QSignRequest*> QLoadReqProcServer::acceptQueue = QList<QSignRequest*>();
 QList<QSignRequest*> QLoadReqProcServer::waitProcQueue = QList<QSignRequest*>();
 QList<QSignRequest*> QLoadReqProcServer::denyQueue = QList<QSignRequest*>();
 QList<QSignRequest*> QLoadReqProcServer::cancelQueue = QList<QSignRequest*>();
+QMutex QLoadReqProcServer::mutex ;
 
 QLoadReqProcServer* QLoadReqProcServer::getServerInstance(){
     if( 0 != QLoadReqProcServer::serverInstance ){
@@ -24,9 +26,7 @@ bool QLoadReqProcServer::closeServerInstance(void){
 }
 
 QLoadReqProcServer::QLoadReqProcServer(){
-    isRunning = false;//线程未启动
 }
-
 QLoadReqProcServer::~QLoadReqProcServer(){
 
 }
@@ -36,11 +36,13 @@ bool QLoadReqProcServer::newReq(QSignRequest *req){
         qDebug("QLoadReqProcServer::newReq(req):req should not be zero!\n");
         return false;
     }
+    mutex.lock();
     QLoadReqProcServer::waitProcQueue.append(req);
     //连接服务器和请求的信号和槽，当等待队列中的元素被处理时，将会通知请求对象
-    connect(QLoadReqProcServer::getServerInstance(),SIGNAL(reqProcessed(QObject*,QSignRequest::REQ_STATUS)),req,SLOT(Req_Processed(QObjcet*,QSignRequest::REQ_STATUS)));
+    //connect(QLoadReqProcServer::getServerInstance(),SIGNAL(reqProcessed(QObject*,QSignRequest::REQ_STATUS)),req,SLOT(Req_Processed(QObjcet*,QSignRequest::REQ_STATUS)));
     //记录请求到日志中
     QLoadReqProcServer::recordSignReq(req);
+    mutex.unlock();
     return true;
 }
 //取消登录的请求
@@ -55,34 +57,26 @@ bool QLoadReqProcServer::cancelReq( QSignRequest *req){
     }
     return true;
 }
-//启动或者重启服务线程,当使用独立线程实现服务时需要重点修改
-bool QLoadReqProcServer::startLoadReqProcServer(bool restart){
-    if(restart){
-        qDebug("重启load server!\n");
-        QLoadReqProcServer::serverInstance->isRunning = true;
-        QLoadReqProcServer::ProcessReq();
-        return true;
-    }
-    QLoadReqProcServer::ProcessReq();
-    return true;
-}
-//获取服务运行状态
-bool QLoadReqProcServer::getReqProcServerRunStatus(){
-    return QLoadReqProcServer::getServerInstance()->isRunning;
-}
-
 //处理目前队列中的请求
 void QLoadReqProcServer::ProcessReq(){
-    while(false == waitProcQueue.empty()){
-        if( true == queryReqInfor( waitProcQueue.first() ) ){
+    if(!QLoadReqProcServer::waitProcQueue.isEmpty()){
+        qDebug("The Wait Queue is not empty!");
+        QSignRequest*lREQ = QLoadReqProcServer::waitProcQueue.first();
+        Q_ASSERT_X(lREQ->reqStatus == QSignRequest::REQ_INQUE,"in ProcessReq()","wait queue' item should be REQ_INQUE status");
+        if( true == queryReqInfor( lREQ ) ){
             //用户验证为合法用户，触发消息
-            emit serverInstance->reqProcessed((QObject*)waitProcQueue.first(),QSignRequest::REQ_ACCEPT);
-            acceptQueue.append(waitProcQueue.first());//将请求加入到接受队列中
+            //emit serverInstance->reqProcessed((QObject*)waitProcQueue.first(),QSignRequest::REQ_ACCEPT);
+            lREQ->reqStatus = QSignRequest::REQ_ACCEPT;
+            QLoadReqProcServer::acceptQueue.append(lREQ);//将请求加入到接受队列中
+            qDebug("In Server Thread:user sign req accept!");
         }else{//非法用户
-            emit serverInstance->reqProcessed((QObject*)waitProcQueue.first(),QSignRequest::REQ_REJECT);
-            denyQueue.append(waitProcQueue.first());//将请求加入拒绝队列
-        }
-        waitProcQueue.removeFirst();
+            //emit serverInstance->reqProcessed((QObject*)waitProcQueue.first(),QSignRequest::REQ_REJECT);
+             lREQ->reqStatus = QSignRequest::REQ_REJECT;
+            QLoadReqProcServer::denyQueue.append(lREQ);//将请求加入拒绝队列
+            qDebug("user sign req reject!");
+            }
+        QLoadReqProcServer::waitProcQueue.removeFirst();
+        qDebug("wait queue is not empty!");
     }
 }
 //查询请求是否能够被允许，是否合法
@@ -95,9 +89,8 @@ bool QLoadReqProcServer::queryReqInfor( QSignRequest* req){
 }
 //记录目前在服务器上的账号信息
 void QLoadReqProcServer::recordSignReq( QSignRequest* req){
-    qDebug("recordSignReq() not implement in current!\n");
+    qDebug("recordSignReq() not implement in curQ_ASSERT(false);rent!\n");
 }
-
 //void QLoadReqProcServer::reqProcessed(QSignRequest::REQ_STATUS procResult){
 //    qDebug("QLoadReqProcServer::reqProcessed");
 //}
@@ -113,3 +106,34 @@ void QLoadReqProcServer::checkQueue(){
         }
     }
 }
+//用户查询REQ状态的接口
+QSignRequest::REQ_STATUS QLoadReqProcServer::queryREQStatus(QSignRequest* req){
+    if( 0 == req ){
+        qDebug("queryREQStatus param should not be zero!\n");
+        return QSignRequest::REQ_REJECT;
+    }
+    QSignRequest::REQ_STATUS s;
+    mutex.lock();
+    if( waitProcQueue.indexOf(req) != -1){
+        s = QSignRequest::REQ_INQUE;
+    }
+    if( acceptQueue.indexOf(req) != -1){
+        s = QSignRequest::REQ_ACCEPT;
+    }
+    if( acceptQueue.indexOf(req) != -1){
+        s = QSignRequest::REQ_REJECT;
+    }
+    mutex.unlock();
+    return s;
+}
+//线程函数
+void QLoadReqProcServer::run(){
+    while(1){
+        mutex.lock();
+        ProcessReq();
+        mutex.unlock();
+    }
+    qDebug("thread will end!");
+    exec();
+}
+

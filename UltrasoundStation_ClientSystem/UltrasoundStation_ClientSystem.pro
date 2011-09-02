@@ -8,7 +8,7 @@ QT       += core gui
 
 TARGET = UltrasoundStation_ClientSystem
 TEMPLATE = app
-
+DESTDIR = ../../OUT/clientsystem
 HEADERS +=  Headers/ClientMainGui.h \
     signinwidget.h \
     Headers/signinwidget.h \

@@ -44,20 +44,8 @@ QSignRequest::~QSignRequest(){
 }
 //处理用户发出的请求，系统与用户通过该接口的返回值来获知用户请求是否被接受
 QSignRequest::REQ_STATUS QSignRequest::ProcessSignReq(){
-    qDebug("QSignRequest::REQ_STATUS QSignRequest::ProcessSignReq()\n");
-    if( false == QLoadReqProcServer::getReqProcServerRunStatus() ){
-        qDebug("server not running at now,we should start it !\n");
-        QLoadReqProcServer::startLoadReqProcServer();
-    }
+    //qDebug("QSignRequest::REQ_STATUS QSignRequest::ProcessSignReq()\n");
     return this->reqStatus;
-}
-//用于接收服务器线程端发出的处理结果
-void QSignRequest::Req_Processed(QObject* obj,REQ_STATUS processResult){
-    qDebug("SLOTS Functions:QSignRequest::Req_Processed() In!\r\n");
-    QSignRequest* local = qobject_cast<QSignRequest*>(obj);
-    if(local == this){
-        this->reqStatus= processResult;
-    }
 }
 //==操作符重载
 bool QSignRequest::operator ==(QSignRequest& req){

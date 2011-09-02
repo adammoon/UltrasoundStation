@@ -82,10 +82,10 @@
     <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString">Simulator Qt for MinGW 4.4 (Qt SDK) Debug</value>
     <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">Qt4ProjectManager.Qt4BuildConfiguration</value>
     <value key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration" type="int">2</value>
-    <value key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory" type="QString">E:/GraduateDesign/UltrasoundStation-build-desktop</value>
-    <value key="Qt4ProjectManager.Qt4BuildConfiguration.QtVersionId" type="int">6</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory" type="QString">/home/flyfish/Git_Project/UltrasoundStation</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.QtVersionId" type="int">7</value>
     <value key="Qt4ProjectManager.Qt4BuildConfiguration.ToolChain" type="QString">ProjectExplorer.ToolChain.Gcc:/usr/bin/g++.x86-linux-generic-elf-32bit.</value>
-    <value key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild" type="bool">true</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild" type="bool">false</value>
    </valuemap>
    <valuemap key="ProjectExplorer.Target.BuildConfiguration.1" type="QVariantMap">
     <value key="ProjectExplorer.BuildCOnfiguration.ToolChain" type="QString">ProjectExplorer.ToolChain.Gcc:/usr/bin/g++.x86-linux-generic-elf-32bit.</value>

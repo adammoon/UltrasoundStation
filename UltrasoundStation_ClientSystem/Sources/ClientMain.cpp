@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 //    gui->show();
     //Æô¶¯µÇÂ¼¹ÜÀí
     QLoadReqProcServer* loadAdminServer = QLoadReqProcServer::getServerInstance();
+    loadAdminServer->start();
     QsignInWidget gui;
     gui.show();
     return client.exec();
