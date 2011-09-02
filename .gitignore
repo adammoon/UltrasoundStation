@@ -7,3 +7,6 @@ Makefile
 *.Release
 debug\
 release\
+moc*
+*.[oa]
+*.pro.user*
