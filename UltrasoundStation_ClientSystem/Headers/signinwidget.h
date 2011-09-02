@@ -15,6 +15,10 @@ class QLineEdit;
 class QComboBox;
 class QVBoxLayout;
 class QHBoxLayout;
+class QPushButton;
+
+class QSignRequest;
+class QLoadReqProcServer;
 //!QsignInWidget
 class QsignInWidget : public QWidget
 {
@@ -24,20 +28,21 @@ public:
         STATUS_ROLE_DOCTOR,     /**< doctor loadded*/
         STATUS_ROLE_VISITOR,    /**< visitor loadded*/
         STATUS_ROLE_ADMIN       /**< administrator loaded*/
-    }SING_STATUS;
+    }ROLE;
     explicit QsignInWidget(QWidget *parent = 0);
 private://members
     QLabel *label_UserName,*label_PWD,*label_Role;
     QLineEdit *textUserName,*textPassWord;
     QComboBox *comboRole;
     QVBoxLayout *mainLayout;
-    QHBoxLayout *layout_lineOne,*layout_lineTwo,*layout_lineThree;
+    QHBoxLayout *layout_lineOne,*layout_lineTwo,*layout_lineThree,*layout_lineFour;
+    QPushButton *btn_LoadIn,*btn_ResetInfo,*btn_Cancel;
 private://functions
     void setSubWidget(void);
+    QStringList roleList;
 signals:
 
 public slots:
-
+    void loadIn();
 };
-
 #endif // SIGNINWIDGET_H
