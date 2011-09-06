@@ -16,6 +16,8 @@ QsignInWidget::QsignInWidget(QWidget *parent) :
     setSubWidget();
     //按钮的信号处理
     connect(btn_LoadIn,SIGNAL(clicked()),this,SLOT(loadIn()));
+    connect(btn_ResetInfo,SIGNAL(clicked()),this,SLOT(resetContext()));
+    connect(btn_Cancel,SIGNAL(clicked()),this,SLOT(close()));
     setLayout(mainLayout);
 }
 //控件创建于布局
@@ -73,16 +75,26 @@ void QsignInWidget::loadIn(){
                                                 userPassWd,
                                                 role);
     while(1){
-        if(currentREQ->ProcessSignReq() == QSignRequest::REQ_ACCEPT)
-        {
-            qDebug("req accept!");
-            break;
+        switch (currentREQ->ProcessSignReq()){
+          case QSignRequest::REQ_ACCEPT:
+            qDebug("req Accept");
+            goto ok;
+          case QSignRequest::REQ_REJECT:
+            qDebug("req Reject");
+            goto ok;
+          case QSignRequest::REQ_INQUE:
+            qDebug("req inqueue");
+            goto ok;
+          case QSignRequest::REQ_OVER:
+            qDebug("req cancelled");
+            goto ok;
         }
-        if(currentREQ->ProcessSignReq() == QSignRequest::REQ_REJECT){
-            qDebug("req reject!");
-            break;
-        }
-        qDebug("req in queue!");
+        qDebug("wait req return!");
     }
+ok:
     return;
+}
+void QsignInWidget::resetContext(){
+    textUserName->setText("doctor");
+    comboRole->setCurrentIndex(0);
 }

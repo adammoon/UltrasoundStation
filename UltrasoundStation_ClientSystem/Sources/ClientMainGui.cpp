@@ -16,6 +16,7 @@ QClientMainGui* QClientMainGui::getGuiInstance(){
 }
 
 QClientMainGui::QClientMainGui(QWidget *parent){
+    Q_UNUSED(parent);
     //do nothing
     setMenuContext();
     move(1,1);

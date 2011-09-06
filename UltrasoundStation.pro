@@ -8,4 +8,4 @@ TEMPLATE = subdirs
 SUBDIRS += UltrasoundStation_ClientSystem   \
 #           UltrasoundStation_ServerSystem   \
 #           UltrasoundStation_PlugIns        \
-#           UltrasoundStation_test
+#           UltrasoundStation_test \

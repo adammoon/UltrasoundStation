@@ -2,16 +2,20 @@
 #include "Headers/ClientMainGui.h"
 #include "Headers/signinwidget.h"
 #include "Headers/LoadReqProcessServer.h"
+#include "Headers/reporteditui.h"
 int main(int argc, char *argv[])
 {
     QApplication client(argc, argv);
 //    QClientMainGui* gui;
 //    gui = QClientMainGui::getGuiInstance();
 //    gui->show();
-    //启动登录管理
-    QLoadReqProcServer* loadAdminServer = QLoadReqProcServer::getServerInstance();
-    loadAdminServer->start();
-    QsignInWidget gui;
+    //启动登录管理-----test
+//    QLoadReqProcServer* loadAdminServer = QLoadReqProcServer::getServerInstance();
+//    loadAdminServer->start();
+//    QsignInWidget gui;
+//    gui.show();
+    reportEditUi gui;
     gui.show();
     return client.exec();
 }
+

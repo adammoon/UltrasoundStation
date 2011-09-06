@@ -44,5 +44,6 @@ signals:
 
 public slots:
     void loadIn();
+    void resetContext();
 };
 #endif // SIGNINWIDGET_H

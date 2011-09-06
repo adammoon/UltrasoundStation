@@ -3,6 +3,7 @@
 #include "Headers/LoadReqProcessServer.h"
 
 #include <QString>
+#include <QDateTime>
 
 QSignRequest::QSignRequest(QObject *parent):QObject(parent){
 }
@@ -16,6 +17,9 @@ QSignRequest::QSignRequest( QString &name,
     this->requestSrcType = signReqType;
     this->reqStatus = QSignRequest::REQ_INQUE;
     this->reqType = signType;
+    reqTime = QDateTime::currentDateTime().toString("yyMMddhhmmss");
+//    QDateTime curTime = QDateTime::currentDateTime();
+//    reqTime = curTime.toString("yyMMddhhmmss");
     //2.通知服务器有新的请求包到达
     QLoadReqProcServer::newReq(this);
 }
@@ -31,16 +35,17 @@ QSignRequest::QSignRequest(QSignInfo *signInfor, REQ_SRC_TYPE signReqType, REQ_T
     this->requestSrcType = signReqType;
     this->reqStatus = QSignRequest::REQ_INQUE;
     this->reqType = signType;
+    reqTime = QDateTime::currentDateTime().toString("yyMMddhhmmss");
     //2.通知服务器有新的请求包到达
     QLoadReqProcServer::newReq(this);
 }
 
 QSignRequest::~QSignRequest(){
-    //释放请求
-    //1.向服务器申请取消该请求
-    QLoadReqProcServer::cancelReq(this);
-    //2.删除登录请求的相关信息
-    SAFE_DELETE(reqForSignInfor);
+    //说明:
+    //当在使用QSignRequest创建一个对象时，对象退出生命范围时被析够，但是
+    //这并不代表一个请求被取消，它可能已经登录成功。因此这里不应当删除任何东西
+    //登录请求创建时使用new创建时，该请求可以被长期保持，从而传递给QLoadReqProServer管理
+    //因此，一个登录请求的内容应该保持到QLoadReqProServer管理退出，或者用户发出一个取消的请求
 }
 //处理用户发出的请求，系统与用户通过该接口的返回值来获知用户请求是否被接受
 QSignRequest::REQ_STATUS QSignRequest::ProcessSignReq(){
@@ -52,7 +57,8 @@ bool QSignRequest::operator ==(QSignRequest& req){
     if(*this->reqForSignInfor == *req.reqForSignInfor &&
        this->reqStatus == req.reqStatus &&
        this->requestSrcType == req.requestSrcType &&
-       this->reqType == req.reqType ){
+       this->reqType == req.reqType &&
+       this->reqTime == req.reqTime){
         return true;
     }
     return false;
@@ -67,7 +73,7 @@ QSignInfo::QSignInfo( QString &name, QSignInfo::LOG_ROLE role,  QString passWord
 bool QSignInfo::operator ==(QSignInfo& infor){
     if(this->nameInfo == infor.nameInfo &&
        this->pwdInfo == infor.pwdInfo &&
-       this->roleInfo == infor.roleInfo){
+       this->roleInfo == infor.roleInfo ){
         return true;
     }
     return false;

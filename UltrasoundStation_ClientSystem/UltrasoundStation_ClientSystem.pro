@@ -9,17 +9,26 @@ QT       += core gui
 TARGET = UltrasoundStation_ClientSystem
 TEMPLATE = app
 DESTDIR = ../../OUT/clientsystem
-HEADERS +=  Headers/ClientMainGui.h \
-    signinwidget.h \
-    Headers/signinwidget.h \
-    Headers/SignRequest.h \
-    ../common/commonFunction.h \
-    Headers/LoadReqProcessServer.h
 
+INCLUDEPATH += ../common
+
+HEADERS +=  Headers/ClientMainGui.h \
+            Headers/signinwidget.h \
+            Headers/signinwidget.h \
+            Headers/SignRequest.h \
+            Headers/LoadReqProcessServer.h  \
+            ../common/commonFunction.h    \
+            ../common/QConfigManage.h \
+            Headers/reporteditui.h
 SOURCES +=  Sources/ClientMainGui.cpp \
             Sources/ClientMain.cpp \
-    Sources/signinwidget.cpp \
-    Sources/SignRequest.cpp \
-    Sources/LoadReqProcessServer.cpp
-#通过修改DEFINES变量来定制系统的功能
-DEFINES += USER_LOG_MODEL           \   #该系统实现了用户登录管理模块
+            Sources/signinwidget.cpp \
+            Sources/SignRequest.cpp \
+            Sources/LoadReqProcessServer.cpp    \
+            ../common/QConfigManage.cpp \
+            Sources/reporteditui.cpp
+#通薷DEFINES系统墓
+DEFINES += USER_LOG_MODEL           \   #系统实没录模
+
+FORMS += \
+    ui_Files/reporteditui.ui

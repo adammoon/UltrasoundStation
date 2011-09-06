@@ -10,6 +10,7 @@
 #define SIGNREQUSET_H
 #include <QObject>
 
+class QString;
 class QSignInfo;        //登录请求基本信息
 //!QSignInfo 记录登录基本信息
 class QSignInfo{
@@ -23,7 +24,7 @@ public:
                QSignInfo::LOG_ROLE role = QSignInfo::ROLE_VISITOR,
                QString passWord = QString(""));
     bool operator ==(QSignInfo& infor);
-private:
+public:
     QString nameInfo;
     QSignInfo::LOG_ROLE roleInfo;
     QString pwdInfo;
@@ -46,7 +47,8 @@ public://typedefs
     typedef enum REQ_STATUS{
         REQ_ACCEPT, /*!< 登录请求被接受*/
         REQ_REJECT, /*!< 登录请求被拒绝*/
-        REQ_INQUE   /*!< 请求正处于队列中*/
+        REQ_INQUE,  /*!< 请求正处于队列中*/
+        REQ_OVER
     }REQ_STATUS;
     //!请求类别
     /*!
@@ -73,8 +75,9 @@ public://functions
     bool operator ==(QSignRequest& req);
 private:
     REQ_SRC_TYPE requestSrcType;                 /*!< 请求来源       */
-    REQ_STATUS reqStatus;                        /*!< 请求状态       */
-    REQ_TYPE   reqType;                          /*!< 登录或者注销请求*/
+    REQ_STATUS  reqStatus;                        /*!< 请求状态       */
+    REQ_TYPE    reqType;                          /*!< 登录或者注销请求*/
+    QString     reqTime;                         /*!< 请求发生时刻*/
     QSignInfo* reqForSignInfor;                  /*!< 登录信息       */
     friend class QLoadReqProcServer;
 };

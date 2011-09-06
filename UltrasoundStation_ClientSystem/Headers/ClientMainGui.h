@@ -85,3 +85,4 @@ private://members
     SHOW_STATUS currentStatus;  /**< µ±Ç°×´Ì¬ */
 };
 #endif
+
