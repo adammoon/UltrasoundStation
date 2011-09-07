@@ -10,6 +10,8 @@ release\
 moc*
 *.[oa]
 *.pro.user*
+<<<<<<< HEAD
 ui_*.h
 *.vpp~*
 *.~
+
