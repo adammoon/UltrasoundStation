@@ -11,3 +11,5 @@ moc*
 *.[oa]
 *.pro.user*
 ui_*.h
+*.vpp~*
+*.~

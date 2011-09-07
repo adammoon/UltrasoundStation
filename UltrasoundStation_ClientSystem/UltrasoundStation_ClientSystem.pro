@@ -19,16 +19,19 @@ HEADERS +=  Headers/ClientMainGui.h \
             Headers/LoadReqProcessServer.h  \
             ../common/commonFunction.h    \
             ../common/QConfigManage.h \
-            Headers/reporteditui.h
+            Headers/reporteditui.h \
+            Headers/qreportmanageui.h
 SOURCES +=  Sources/ClientMainGui.cpp \
             Sources/ClientMain.cpp \
             Sources/signinwidget.cpp \
             Sources/SignRequest.cpp \
             Sources/LoadReqProcessServer.cpp    \
             ../common/QConfigManage.cpp \
-            Sources/reporteditui.cpp
+            Sources/reporteditui.cpp \
+            Sources/qreportmanageui.cpp
 #ͨ޸DEFINESϵͳĹ
 DEFINES += USER_LOG_MODEL           \   #ϵͳʵû¼ģ
 
 FORMS += \
-    ui_Files/reporteditui.ui
+    ui_Files/reporteditui.ui \
+    ui_Files/qreportmanageui.ui
