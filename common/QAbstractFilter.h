@@ -2,5 +2,5 @@
 #define QABSTRACTFILTER_H
 class QAbstractFilter{
 
-    }
-endif // QABSTRACTFILTER_H
+    };
+#endif // QABSTRACTFILTER_H

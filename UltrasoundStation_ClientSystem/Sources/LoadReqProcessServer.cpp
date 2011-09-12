@@ -137,6 +137,7 @@ void QLoadReqProcServer::recordSignReq( QSignRequest* req){
     if(!logFile.open(QIODevice::ReadWrite|QIODevice::Append)){
         qDebug("fault");
         QFile::FileError err = logFile.error();
+        Q_UNUSED(err);
         qDebug("fault");
         return;
     }
