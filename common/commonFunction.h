@@ -5,5 +5,4 @@
                                 delete pointer;     \
                                 pointer = 0;}
 #endif
-
 #endif // COMMONFUNCTION_H

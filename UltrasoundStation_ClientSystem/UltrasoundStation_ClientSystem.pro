@@ -23,7 +23,9 @@ HEADERS +=  Headers/ClientMainGui.h \
             Headers/reporteditui.h \
             Headers/qreportmanageui.h \
             ../common/QAbstractFilter.h \
-    ../common/QMatrix.h
+	    ../common/QMatrix.h \
+	    ../common/qbezier.h \
+    ../common/qbezier.h
 SOURCES +=  Sources/ClientMainGui.cpp \
             Sources/ClientMain.cpp \
             Sources/signinwidget.cpp \
@@ -34,7 +36,8 @@ SOURCES +=  Sources/ClientMainGui.cpp \
             Sources/reporteditui.cpp \
             Sources/qreportmanageui.cpp \
     ../common/QAbstractFilter.cpp \
-    ../common/QMatrix.cpp
+    ../common/QMatrix.cpp \
+    ../common/qbezier.cpp
 #ͨ޸DEFINESϵͳĹ
 DEFINES += USER_LOG_MODEL           \   #ϵͳʵû¼ģ
 
